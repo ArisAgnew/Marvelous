@@ -11,10 +11,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             marvel.Events.Find(123);
 
@@ -29,10 +27,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             await marvel.Events.FindAsync(123);
 
@@ -47,10 +43,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             marvel.Events.FindAll();
 
@@ -65,10 +59,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             await marvel.Events.FindAllAsync();
 
@@ -83,10 +75,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -108,10 +98,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -134,10 +122,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -160,10 +146,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -186,10 +170,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -212,10 +194,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -238,10 +218,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -264,10 +242,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -290,10 +266,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -316,10 +290,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -342,10 +314,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -368,10 +338,8 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {

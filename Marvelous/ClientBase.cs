@@ -5,11 +5,12 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace Marvelous
 {
-    public abstract class ClientBase
+    public abstract class ClientBase<T> where T : MarvelBase
     {
         protected const string CharactersResource = "characters";
         protected const string ComicsResource = "comics";
@@ -21,99 +22,67 @@ namespace Marvelous
         internal const string BaseUrl = "http://gateway.marvel.com/v1/public/";
         private readonly string _publicKey;
         private readonly string _privateKey;
+        private readonly IRestClient _restClient;
 
         internal ClientBase(string publicKey, string privateKey)
         {
             _publicKey = publicKey;
             _privateKey = privateKey;
-            CreateRequestClient = () =>
-            {
-                var client = new RestClient(BaseUrl);
-                client.AddHandler("application/json", new DynamicJsonDeserializer());
-                return client;
-            };
+            _restClient = CreateRequestClient();
         }
 
-        public dynamic Find(int id)
+        internal ClientBase(string publicKey, string privateKey, IRestClient restClient)
+        {
+            _publicKey = publicKey;
+            _privateKey = privateKey;
+            _restClient = restClient;
+        }
+
+        private static RestClient CreateRequestClient()
+        {
+            var client = new RestClient(BaseUrl);
+            return client;
+        }
+
+        public MarvelRoot<T> Find(int id)
         {
             return QueryIdSubPath(id);
         }
 
-        public async Task<dynamic> FindAsync(int id)
+        public async Task<MarvelRoot<T>> FindAsync(int id)
         {
             return await QueryIdSubPathAsync(id);
         }
 
-        public dynamic FindAll(int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
+        public MarvelRoot<T> FindAll(int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
         {
-            var options = queryParameters ?? new NameValueCollection();
-            options.Add("limit", limit.ToString(CultureInfo.InvariantCulture));
-            options.Add("offset", offset.ToString(CultureInfo.InvariantCulture));
+            var options = GetOptions(limit, offset, queryParameters);
 
-            return Query(Resource, options);
+            return Query(Resource, options); 
         }
 
-        public async Task<dynamic> FindAllAsync(int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
+        public async Task<MarvelRoot<T>> FindAllAsync(int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
         {
-            var options = queryParameters ?? new NameValueCollection();
-            options.Add("limit", limit.ToString(CultureInfo.InvariantCulture));
-            options.Add("offset", offset.ToString(CultureInfo.InvariantCulture));
+            var options = GetOptions(limit, offset, queryParameters);
 
             return await QueryAsync(Resource, options);
         }
 
-        protected dynamic QueryIdSubPath(int id, string path = null, int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
+        protected MarvelRoot<T> QueryIdSubPath(int id, string path = null, int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
         {
-            var options = queryParameters ?? new NameValueCollection();
-            options.Add("limit", limit.ToString(CultureInfo.InvariantCulture));
-            options.Add("offset", offset.ToString(CultureInfo.InvariantCulture));
-
-            var resourceUri = Resource + "/{id}";
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                resourceUri += "/" + path;
-            }
-
-            return Query(resourceUri, options, UrlSegmentFor("id", id));
+            return Query(GetResource(path), GetOptions(limit, offset, queryParameters), UrlSegmentFor("id", id));
         }
 
-        protected async Task<dynamic> QueryIdSubPathAsync(int id, string path = null, int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
+        protected async Task<MarvelRoot<T>> QueryIdSubPathAsync(int id, string path = null, int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
         {
-            var options = queryParameters ?? new NameValueCollection();
-            options.Add("limit", limit.ToString(CultureInfo.InvariantCulture));
-            options.Add("offset", offset.ToString(CultureInfo.InvariantCulture));
-
-            var resourceUri = Resource + "/{id}";
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                resourceUri += "/" + path;
-            }
-
-            return await QueryAsync(resourceUri, options, UrlSegmentFor("id", id));
+            return await QueryAsync(GetResource(path), GetOptions(limit, offset, queryParameters), UrlSegmentFor("id", id));
         }
 
-        private dynamic Query(string resourcePath, NameValueCollection options, NameValueCollection urlSegments = null)
+        private MarvelRoot<T> Query(string resourcePath, NameValueCollection options, NameValueCollection urlSegments = null)
         {
-            options = options ?? new NameValueCollection();
-            urlSegments = urlSegments ?? new NameValueCollection();
+            var request = PrepareRequest(resourcePath, options, urlSegments);
 
-            var client = CreateRequestClient();
-
-            var timestamp = GetTimestamp();
-            var hash = GetHash(timestamp);
-            var request = new RestRequest { Resource = resourcePath };
-
-            options.AllKeys.ToList().ForEach(o => request.AddParameter(o, options[o], ParameterType.QueryString));
-
-            urlSegments.AllKeys.ToList().ForEach(segment => request.AddUrlSegment(segment, urlSegments[segment]));
-
-            request.AddParameter("ts", timestamp, ParameterType.QueryString);
-            request.AddParameter("apikey", _publicKey, ParameterType.QueryString);
-            request.AddParameter("hash", hash, ParameterType.QueryString);
-
-            var response = client.Execute<dynamic>(request);
+            var response = _restClient.Execute<MarvelRoot<T>>(request);
 
             if (response.ErrorException == null)
             {
@@ -124,18 +93,18 @@ namespace Marvelous
                 response.ErrorException);
         }
 
-        private Task<dynamic> QueryAsync(string resourcePath, NameValueCollection options, NameValueCollection urlSegments = null)
+        private Task<MarvelRoot<T>> QueryAsync(string resourcePath, NameValueCollection options, NameValueCollection urlSegments = null)
         {
             var request = PrepareRequest(resourcePath, options, urlSegments);
 
-            var source = new TaskCompletionSource<dynamic>();
-            var client = CreateRequestClient();
+            var source = new TaskCompletionSource<MarvelRoot<T>>();
 
-            client.ExecuteAsync<dynamic>(request, response =>
+            _restClient.ExecuteAsync<dynamic>(request, response =>
             {
                 if (response.ErrorException == null)
                 {
-                    source.SetResult(response.Data);
+                    var marvelRoot = JsonConvert.DeserializeObject<MarvelRoot<T>>(response.Content);
+                    source.SetResult(marvelRoot);
                 }
                 else
                 {
@@ -145,6 +114,25 @@ namespace Marvelous
             });
 
             return source.Task;
+        }
+
+        private string GetResource(string path)
+        {
+            var resourceUri = Resource + "/{id}";
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                resourceUri += "/" + path;
+            }
+            return resourceUri;
+        }
+
+        private static NameValueCollection GetOptions(int limit, int offset, NameValueCollection queryParameters)
+        {
+            var options = queryParameters ?? new NameValueCollection();
+            options.Add("limit", limit.ToString(CultureInfo.InvariantCulture));
+            options.Add("offset", offset.ToString(CultureInfo.InvariantCulture));
+            return options;
         }
 
         private RestRequest PrepareRequest(string resourcePath, NameValueCollection options, NameValueCollection urlSegments = null)
@@ -174,7 +162,7 @@ namespace Marvelous
             var hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(bytes);
             var converted = BitConverter.ToString(hash);
 
-            return converted.Replace("-", String.Empty).ToLower();
+            return converted.Replace("-", string.Empty).ToLower();
         }
 
         private static string GetTimestamp()
@@ -189,9 +177,8 @@ namespace Marvelous
         {
             return new NameValueCollection { { segmentName, segmentValue.ToString() } };
         }
-
-        public Func<IRestClient> CreateRequestClient { get; set; }
-
+        
         protected abstract string Resource { get; }
     }
+    
 }

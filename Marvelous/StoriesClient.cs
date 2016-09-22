@@ -1,13 +1,16 @@
 ﻿using System.Collections.Specialized;
 using System.Threading.Tasks;
+using RestSharp;
 
 namespace Marvelous
 {
-    public class StoriesClient : ClientBase
+    public class StoriesClient<T> : ClientBase<T> where T : MarvelBase
     {
         internal StoriesClient(string publicKey, string privateKey) : base(publicKey, privateKey)
         { }
 
+        internal StoriesClient(string publicKey, string privateKey, IRestClient restClient) : base(publicKey, privateKey, restClient)
+        { }
         #region Sync
         public dynamic Characters(int id, int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
         {

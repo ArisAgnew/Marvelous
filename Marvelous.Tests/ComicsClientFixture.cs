@@ -10,11 +10,7 @@ namespace Marvelous.Tests
         public void Comics_Gets_Find_Request()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
             marvel.Characters.Comics(12345);
             marvel.Comics.Find(123);
 
@@ -28,11 +24,7 @@ namespace Marvelous.Tests
         public async void Comics_Gets_Find_Request_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             await marvel.Comics.FindAsync(123);
 
@@ -47,11 +39,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
-
+            var marvel = new MarvelClient("public", "private", client);
             marvel.Comics.FindAll();
 
             Assert.AreEqual("comics", client.Request.Resource);
@@ -65,11 +53,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
-
+            var marvel = new MarvelClient("public", "private", client);
             await marvel.Comics.FindAllAsync();
 
             Assert.AreEqual("comics", client.Request.Resource);
@@ -82,11 +66,7 @@ namespace Marvelous.Tests
         public void Comics_Gets_Parametarized_FindAll_Request()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -107,11 +87,7 @@ namespace Marvelous.Tests
         public async void Comics_Gets_Parametarized_FindAll_Request_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -134,11 +110,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
-
+            var marvel = new MarvelClient("public", "private", client);
             var parametrs = new NameValueCollection
             {
                 {"name", "Thor"},
@@ -160,10 +132,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -185,11 +154,7 @@ namespace Marvelous.Tests
         public void Comics_Gets_Associated_Creators()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -211,11 +176,7 @@ namespace Marvelous.Tests
         public async void Comics_Gets_Associated_Comics_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -238,10 +199,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -264,11 +222,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
-
+            var marvel = new MarvelClient("public", "private", client);
             var parametrs = new NameValueCollection
             {
                 {"name", "Thor"},
@@ -290,10 +244,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -316,11 +267,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
-
+            var marvel = new MarvelClient("public", "private", client);
             var parametrs = new NameValueCollection
             {
                 {"name", "Thor"},
@@ -336,5 +283,5 @@ namespace Marvelous.Tests
             Assert.AreEqual("3", client.Request.Parameters[3].Value);
             Assert.AreEqual(8, client.Request.Parameters.Count);
         }
-    }  
+    }
 }

@@ -1,11 +1,15 @@
 ﻿using System.Collections.Specialized;
 using System.Threading.Tasks;
+using RestSharp;
 
 namespace Marvelous
 {
-    public class SeriesClient : ClientBase
+    public class SeriesClient<T> : ClientBase<T> where T : MarvelBase
     {
         internal SeriesClient(string publicKey, string privateKey) : base(publicKey, privateKey)
+        { }
+
+        internal SeriesClient(string publicKey, string privateKey, IRestClient restClient) : base(publicKey, privateKey, restClient)
         { }
 
         #region Sync
@@ -67,4 +71,5 @@ namespace Marvelous
             get { return "series"; }
         }
     }
+  
 }

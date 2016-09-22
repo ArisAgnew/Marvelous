@@ -7,74 +7,65 @@ namespace Marvelous
     {
         private readonly string _publicKey;
         private readonly string _privateKey;
-       
-        public MarvelClient(string publicKey, string privateKey)
+        private readonly IRestClient _restClient;
+
+        public MarvelClient(string publicKey, string privateKey, IRestClient restClient = null)
         {
             if (string.IsNullOrEmpty(publicKey)) throw new ArgumentException("You must supply a public API key.");
             if (string.IsNullOrEmpty(privateKey)) throw new ArgumentException("You must supply a private API key.");
 
             _publicKey = publicKey;
             _privateKey = privateKey;
+            _restClient = restClient;
         }
 
-        public CharactersClient Characters
+        public CharactersClient<Character> Characters
         {
             get
             {
-                return ConfigureClient(new CharactersClient(_publicKey, _privateKey));
+                return new CharactersClient<Character>(_publicKey, _privateKey, _restClient);
             }
         }
 
-        public ComicsClient Comics
+        public ComicsClient<Comic> Comics
         {
             get
             {
-                return ConfigureClient(new ComicsClient(_publicKey, _privateKey));
+                return new ComicsClient<Comic>(_publicKey, _privateKey, _restClient);
             }
         }
 
-        public CreatorsClient Creators
+        public CreatorsClient<Creator> Creators
         {
             get
             {
-                return ConfigureClient(new CreatorsClient(_publicKey, _privateKey));
+                return new CreatorsClient<Creator>(_publicKey, _privateKey, _restClient);
             }
         }
 
-        public EventsClient Events
+        public EventsClient<Event> Events
         {
             get
             {
-                return ConfigureClient(new EventsClient(_publicKey, _privateKey));
+                return new EventsClient<Event>(_publicKey, _privateKey, _restClient);
             }
         }
 
-        public SeriesClient Series
+        public SeriesClient<Series> Series
         {
             get
             {
-                return ConfigureClient(new SeriesClient(_publicKey, _privateKey));
+                return new SeriesClient<Series>(_publicKey, _privateKey, _restClient);
             }
         }
 
-        public StoriesClient Stories
+        public StoriesClient<Story> Stories
         {
             get
             {
-                return ConfigureClient(new StoriesClient(_publicKey, _privateKey));
+                return new StoriesClient<Story>(_publicKey, _privateKey, _restClient);
             }
         }
-
-        private T ConfigureClient<T>(T client) where T : ClientBase
-        {
-            if (CreateRequestClient != null)
-            {
-                client.CreateRequestClient = CreateRequestClient;
-            }
-
-            return client;
-        }
-
-        public Func<IRestClient> CreateRequestClient { get; set; } 
+        
     }
 }

@@ -1,12 +1,16 @@
 ﻿using System.Collections.Specialized;
 using System.Threading.Tasks;
+using RestSharp;
 
 namespace Marvelous
 {
-    public class CharactersClient : ClientBase
+    public class CharactersClient<T> : ClientBase<T> where T : MarvelBase
     {
         internal CharactersClient(string publicKey, string privateKey)
             : base(publicKey, privateKey)
+        { }
+
+        internal CharactersClient(string publicKey, string privateKey, IRestClient restClient) : base(publicKey, privateKey, restClient)
         { }
 
         #region Sync
@@ -25,7 +29,7 @@ namespace Marvelous
             return QueryIdSubPath(id, SeriesResource, limit, offset, queryParameters);
         }
 
-        public dynamic Stories(int id, int limit = 20, int offset = 0, NameValueCollection queryParameters = null) 
+        public dynamic Stories(int id, int limit = 20, int offset = 0, NameValueCollection queryParameters = null)
         {
             return QueryIdSubPath(id, StoriesResource, limit, offset, queryParameters);
         }
