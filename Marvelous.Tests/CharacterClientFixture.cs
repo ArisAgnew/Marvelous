@@ -11,10 +11,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             marvel.Characters.Find(123);
 
@@ -29,10 +26,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             await marvel.Characters.FindAsync(123);
 
@@ -46,11 +40,7 @@ namespace Marvelous.Tests
         public void Character_Gets_Default_FindAll_Request()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             marvel.Characters.FindAll();
 
@@ -64,11 +54,7 @@ namespace Marvelous.Tests
         public async void Character_Gets_Default_FindAll_Request_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             await marvel.Characters.FindAllAsync();
 
@@ -82,11 +68,7 @@ namespace Marvelous.Tests
         public void Character_Gets_Parametarized_FindAll_Request()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -107,11 +89,7 @@ namespace Marvelous.Tests
         public async void Character_Gets_Parametarized_FindAll_Request_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -133,11 +111,7 @@ namespace Marvelous.Tests
         public void Characters_Gets_Associated_Comics()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -159,11 +133,7 @@ namespace Marvelous.Tests
         public async void Characters_Gets_Associated_Comics_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -185,11 +155,7 @@ namespace Marvelous.Tests
         public void Characters_Gets_Associated_Events()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -211,11 +177,7 @@ namespace Marvelous.Tests
         public async void Characters_Gets_Associated_Characters_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -237,11 +199,7 @@ namespace Marvelous.Tests
         public void Characters_Gets_Associated_Series()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -264,10 +222,7 @@ namespace Marvelous.Tests
         {
             var client = new FakeRquestClient();
 
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -289,11 +244,7 @@ namespace Marvelous.Tests
         public void Characters_Gets_Associated_Stories()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
@@ -315,11 +266,7 @@ namespace Marvelous.Tests
         public async void Characters_Gets_Associated_Stories_Async()
         {
             var client = new FakeRquestClient();
-
-            var marvel = new MarvelClient("public", "private")
-            {
-                CreateRequestClient = () => client
-            };
+            var marvel = new MarvelClient("public", "private", client);
 
             var parametrs = new NameValueCollection
             {
